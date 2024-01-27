@@ -8,7 +8,7 @@ export type Person = {
 }
 
 export enum EInfectionVariant {
-  ZOMBIE_19 = "ZOMBIE_19",
+  ZOMBIE_19 = "ZOMBIE_19", // Infecte tout le monde
   ZOMBIE_A = "ZOMBIE_A", // Qui infecte du haut vers le bas. (les personnes de tous les  groupes sociaux Descendant)
   ZOMBIE_B = "ZOMBIE_B", // Qui infecte du bas vers le haut.  (les personnes de tous les groupes sociaux Ascendant)
   ZOMBIE_32 = "ZOMBIE_32", // Qui infecte du bas vers le haut et du haut vers le bas toutes personnes qui à 32 ans et plus.  (de tout les  groupes social Ascendant et Descendant)

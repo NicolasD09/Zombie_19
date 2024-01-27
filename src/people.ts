@@ -23,11 +23,11 @@ const createPerson = (): Person => {
     p.relations = generateRelations();
 
     // générer un 3e niveau de manière aléatoire
-    // const randomBoolean = Math.random() < 0.75;
-    //
-    // if(randomBoolean) {
-    //   p.relations.forEach(p => p.relations = generateRelations())
-    // }
+    const randomBoolean = Math.random() < 0.20;
+
+    if(randomBoolean) {
+      p.relations.forEach(p => p.relations = generateRelations())
+    }
 
   })
 
@@ -35,6 +35,6 @@ const createPerson = (): Person => {
 }
 
 export const createPopulation = (): Person[] => {
-  return Array.from({length:  faker.number.int({min: 2, max: 3})})
+  return Array.from({length:  faker.number.int({min: 3, max: 5})})
     .map(() => createPerson())
 }

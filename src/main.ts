@@ -7,4 +7,4 @@ const population = createPopulation();
 
 printPopulation(population);
 console.log("--------------------------------------------------");
-printPopulation(infectAllFrom(population, 1, EInfectionVariant.ZOMBIE_A))
+printPopulation(infectAllFrom(population, Math.ceil(population.length / 2), EInfectionVariant.ZOMBIE_19))
