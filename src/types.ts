@@ -10,7 +10,8 @@ export type Person = {
 
 export interface Variant {
   name: EInfectionVariant;
-  infect: (people: Person[], startingPoint: Person, variant: EInfectionVariant) => Person[];
+  infect: (people: Person[], startingPoint: Person, variant: EInfectionVariant, condition: Condition) => Person[];
+  condition: (p: Person) => boolean;
 }
 
 export type InfectionFunction = Variant["infect"]
@@ -29,21 +30,4 @@ export enum EVaccine {
   U
 }
 
-// type MaybeType = {
-//   map: (fn: Function) => MaybeType;
-//   chain: () => void;
-//   getOrElse: () => void;
-// }
-
-// const Maybe = (value) => ({
-//   map: (fn) => (value === null || value === undefined ? Maybe(null) : Maybe(fn(value))),
-//   chain: (fn) => (value === null || value === undefined ? Maybe(null) : fn(value)),
-//   getOrElse: (defaultValue) => (value === null || value === undefined ? defaultValue : value),
-// });
-//
-// const maybeValue = Maybe(5);
-//
-// const result = maybeValue
-//   .map((x) => x * 2)
-//   .chain((x) => Maybe(x + 3))
-//   .getOrElse(0);
+export type Condition = (person: Person) => boolean;

@@ -12,7 +12,7 @@ console.log(`Starting infection with ${getPersonInformationString(startingPoint)
 
 printPopulation(population);
 
-const variant = getVariant(EInfectionVariant.ZOMBIE_19);
+const variant = getVariant(EInfectionVariant.ZOMBIE_U);
 console.log(('---------------------------------------------------------------'));
 printPopulation(infectAllFrom(population, startingPoint, variant));
 

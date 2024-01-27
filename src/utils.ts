@@ -1,4 +1,4 @@
-import { EInfectionVariant, Person } from './types.js';
+import { Condition, EInfectionVariant, Person } from './types.js';
 import { faker } from '@faker-js/faker';
 
 export const getPersonInformationString = (person: Person, indent: string = ''): string => {
@@ -29,23 +29,26 @@ export const isHealthy = (p: Person) => {
   return p.infectionStatus === undefined;
 };
 
-export const infectPerson = (person: Person, variant: EInfectionVariant): void => {
-  person.infectionStatus = variant;
+export const infectPerson = (person: Person, variant: EInfectionVariant, condition: Condition): void => {
+  if(condition(person)) {
+    person.infectionStatus = variant;
+  }
 };
 
-export const infectPersonAndRelations = (person: Person, variant: EInfectionVariant): void => {
-  infectPerson(person, variant);
-  person.relations.forEach(p => infectPerson(p, variant));
+export const infectPersonRelations = (person: Person, variant: EInfectionVariant, condition: Condition): void => {
+  if(condition(person)) {
+    person.relations.forEach(p => infectPerson(p, variant, condition))
+  }
 }
 
-export const infectPersonAndRelationsRecursive = (p: Person, variant: EInfectionVariant): void => {
-  infectPerson(p, variant);
+export const infectPersonAndRelationsRecursive = (p: Person, variant: EInfectionVariant, condition: Condition): void => {
+  infectPerson(p, variant, condition);
 
   if(p.relations.length === 0) {
     return;
   }
 
-  p.relations.forEach(p => infectPersonAndRelationsRecursive(p, variant));
+  p.relations.forEach(p => infectPersonAndRelationsRecursive(p, variant, condition));
 };
 
 export const getRandomPerson = (people: Person[]): Person => {
