@@ -1,5 +1,5 @@
 import { Condition, EInfectionVariant, InfectionFunction, Person, Variant } from './types.js';
-import { infectPersonAndRelationsRecursive, infectPersonRelations } from './utils.js';
+import { isHealthy } from './people.js';
 
 // Zombie_A
 export const infectTopToBottom: InfectionFunction = (people: Person[], person: Person, variant: EInfectionVariant, condition?: Condition) => {
@@ -52,11 +52,33 @@ export const infectRootOnly = (people: Person[], person: Person, variant: EInfec
   return people;
 };
 export const infectAllFrom = (people: Person[], startingPoint: Person, variant: Variant): Person[] => {
-  const newInfectedPopulation = variant.infect(people, startingPoint, variant.name, variant.condition);
+  const newInfectedPopulation: Person[] = variant.infect(people, startingPoint, variant.name, variant.condition);
 
   if (newInfectedPopulation === null) {
     throw new Error(`Variant ${variant} unknown or not implemented`);
   }
 
   return newInfectedPopulation;
+};
+
+export const infectPerson = (person: Person, variant: EInfectionVariant, condition: Condition): void => {
+  if(condition(person) && isHealthy(person)) {
+    person.infectionStatus = variant;
+  }
+};
+
+export const infectPersonRelations = (person: Person, variant: EInfectionVariant, condition: Condition): void => {
+  if(condition(person)) {
+    person.relations.forEach(p => infectPerson(p, variant, condition))
+  }
+}
+
+export const infectPersonAndRelationsRecursive = (p: Person, variant: EInfectionVariant, condition: Condition): void => {
+  infectPerson(p, variant, condition);
+
+  if(p.relations.length === 0) {
+    return;
+  }
+
+  p.relations.forEach(p => infectPersonAndRelationsRecursive(p, variant, condition));
 };

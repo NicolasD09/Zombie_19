@@ -41,6 +41,6 @@ export const variants: Variant[] = [
   },
 ]
 
-export const getVariant = (name:EInfectionVariant) => {
+export const getVariant = (name:EInfectionVariant): Variant => {
   return variants.find(v => v.name === name);
 }

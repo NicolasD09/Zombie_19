@@ -77,3 +77,11 @@ export const getPopulationFlattened = (population: Person[]): Person[] => {
 
   return people;
 };
+
+export const isAlive = (p: Person): boolean => {
+  return p.isAlive;
+};
+
+export const isHealthy = (p: Person): boolean => {
+  return p.infectionStatus === undefined;
+};

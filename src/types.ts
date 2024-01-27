@@ -25,9 +25,17 @@ export enum EInfectionVariant {
   ZOMBIE_U = "ZOMBIE_U" // Qui infecte seulement la personne racine la plus Ascendante (La personne la plus haute de tous les cercles sociaux)
 }
 export enum EVaccine {
-  A1,
-  B1,
-  U
+  A1, // vs A & 32
+  B1, // vs B & C
+  U // vs all + immune
+}
+
+export interface Vaccine {
+  type: EVaccine;
+  canApply: (p: Person) => boolean;
+  apply: VaccineApplyFunction
 }
 
 export type Condition = (person: Person) => boolean;
+
+export type VaccineApplyFunction = (person: Person) => void;
