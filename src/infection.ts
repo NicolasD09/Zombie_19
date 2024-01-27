@@ -1,8 +1,7 @@
-import { EInfectionVariant, Person } from './types.js';
+import { EInfectionVariant, InfectionFunction, Person, Variant } from './types.js';
 import { infectPersonAndRelationsRecursive } from './utils.js';
 
-type InfectionFunction = (people: Person[], index: number, variant: EInfectionVariant) => Person[];
-const infectTopToBottom: InfectionFunction = (people: Person[], startIndex: number, variant: EInfectionVariant) => {
+export const infectTopToBottom: InfectionFunction = (people: Person[], startIndex: number, variant: EInfectionVariant) => {
   const newPeople = Array.from(people);
 
   const currentPerson = newPeople[startIndex];
@@ -15,7 +14,7 @@ const infectTopToBottom: InfectionFunction = (people: Person[], startIndex: numb
   return infectTopToBottom(newPeople, startIndex + 1, variant);
 }
 
-const infectBottomToTop: InfectionFunction = (people: Person[], startIndex: number, variant: EInfectionVariant) => {
+export const infectBottomToTop: InfectionFunction = (people: Person[], startIndex: number, variant: EInfectionVariant) => {
   const newPeople = Array.from(people);
 
   const currentPerson = newPeople[startIndex];
@@ -28,7 +27,7 @@ const infectBottomToTop: InfectionFunction = (people: Person[], startIndex: numb
   return infectBottomToTop(newPeople, startIndex - 1, variant);
 }
 
-const infectEveryone = (people: Person[], startIndex: number, variant: EInfectionVariant): Person[] => {
+export const infectEveryone = (people: Person[], startIndex: number, variant: EInfectionVariant): Person[] => {
   const firstIndex = 0;
   const lastIndex = people.length - 1;
 
@@ -45,22 +44,9 @@ const infectEveryone = (people: Person[], startIndex: number, variant: EInfectio
 
   return nextInfection;
 }
-
-const infectPeopleForVariant = (people: Person[], variant: EInfectionVariant, index: number): Person[] | null => {
-  switch (variant) {
-    case EInfectionVariant.ZOMBIE_A:
-      return infectTopToBottom(people, index, variant);
-    case EInfectionVariant.ZOMBIE_B:
-      return infectBottomToTop(people, index, variant);
-    case EInfectionVariant.ZOMBIE_19:
-      return infectEveryone(people, index, variant);
-    default:
-      return null;
-  }
-};
-export const infectAllFrom = (people: Person[], startIndex: number, variant: EInfectionVariant): Person[] => {
+export const infectAllFrom = (people: Person[], startIndex: number, variant: Variant): Person[] => {
   console.log("Infect all from index ", startIndex);
-  const newInfectedPopulation = infectPeopleForVariant(people, variant, startIndex);
+  const newInfectedPopulation = variant.infect(people, startIndex, variant.name);
 
   if(newInfectedPopulation === null) {
     throw new Error(`Variant ${variant} unknown or not implemented`);

@@ -7,6 +7,13 @@ export type Person = {
   isAlive: boolean;
 }
 
+export type InfectionFunction = (people: Person[], index: number, variant: EInfectionVariant) => Person[];
+
+export interface Variant {
+  name: EInfectionVariant;
+  infect: (people: Person[], index: number, variant: EInfectionVariant) => Person[];
+}
+
 export enum EInfectionVariant {
   ZOMBIE_19 = "ZOMBIE_19", // Infecte tout le monde
   ZOMBIE_A = "ZOMBIE_A", // Qui infecte du haut vers le bas. (les personnes de tous les  groupes sociaux Descendant)
