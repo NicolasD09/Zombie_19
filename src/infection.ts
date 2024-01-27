@@ -2,52 +2,38 @@ import { EInfectionVariant, InfectionFunction, Person, Variant } from './types.j
 import { infectPersonAndRelationsRecursive } from './utils.js';
 
 // Zombie_A
-export const infectTopToBottom: InfectionFunction = (people: Person[], startingPoint: Person, variant: EInfectionVariant) => {
-  const newPeople = Array.from(people);
+export const infectTopToBottom: InfectionFunction = (people: Person[], person: Person, variant: EInfectionVariant) => {
+  infectPersonAndRelationsRecursive(person, variant);
 
-  infectPersonAndRelationsRecursive(startingPoint, variant);
-
-  if(startingPoint === people.length - 1) {
-    return newPeople;
-  }
-
-  return infectTopToBottom(newPeople, startingPoint + 1, variant);
+  return people;
 }
 
 // Zombie_B
-export const infectBottomToTop: InfectionFunction = (people: Person[], startingPoint: Person, variant: EInfectionVariant) => {
-  const newPeople = Array.from(people);
+export const infectBottomToTop: InfectionFunction = (people: Person[], person: Person, variant: EInfectionVariant) => {
+  infectPersonAndRelationsRecursive(person, variant)
 
-  const currentPerson = newPeople[startingPoint];
-  newPeople[startingPoint] = infectPersonAndRelationsRecursive(currentPerson, variant);
-
-  if(startingPoint === 0) {
-    return newPeople;
+  if(!person.parentNode) {
+    return people;
   }
 
-  return infectBottomToTop(newPeople, startingPoint - 1, variant);
+  return infectBottomToTop(people, person.parentNode, variant);
 }
 
 // Zombie_19
-export const infectEveryone = (people: Person[], startingPoint: Person, variant: EInfectionVariant): Person[] => {
-  const firstIndex = 0;
-  const lastIndex = people.length - 1;
-
-  if(startingPoint === firstIndex) {
-    return infectTopToBottom(people, startingPoint, variant);
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const infectEveryone = (people: Person[], _: Person, variant: EInfectionVariant): Person[] => {
+  function infectTree(index: number): Person[] {
+    const tree = people[index];
+    if(index === people.length) {
+      return people;
+    }
+    infectTopToBottom(people, tree, variant);
+    return infectTree(index+1)
   }
 
-  if(startingPoint === lastIndex) {
-    return infectBottomToTop(people, startingPoint, variant);
-  }
-
-  const firstInfection = infectBottomToTop(people, startingPoint, variant);
-  const nextInfection = infectTopToBottom(firstInfection, startingPoint + 1, variant);
-
-  return nextInfection;
+  return infectTree(0);
 }
 export const infectAllFrom = (people: Person[], startingPoint: Person, variant: Variant): Person[] => {
-  console.log("Infect all from index ", startingPoint);
   const newInfectedPopulation = variant.infect(people, startingPoint, variant.name);
 
   if(newInfectedPopulation === null) {
