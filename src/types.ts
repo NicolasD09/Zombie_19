@@ -5,14 +5,15 @@ export type Person = {
   relations: Person[];
   immuneTo: EInfectionVariant[];
   isAlive: boolean;
+  parentNode: Person;
 }
-
-export type InfectionFunction = (people: Person[], index: number, variant: EInfectionVariant) => Person[];
 
 export interface Variant {
   name: EInfectionVariant;
-  infect: (people: Person[], index: number, variant: EInfectionVariant) => Person[];
+  infect: (people: Person[], startingPoint: Person, variant: EInfectionVariant) => Person[];
 }
+
+export type InfectionFunction = Variant["infect"]
 
 export enum EInfectionVariant {
   ZOMBIE_19 = "ZOMBIE_19", // Infecte tout le monde

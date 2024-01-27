@@ -1,11 +1,14 @@
-import { createPopulation } from './people.js';
+import { createPopulation, getPopulationFlattened } from './people.js';
+import { getRandomPerson, printPopulation } from './utils.js';
 import { infectAllFrom } from './infection.js';
-import { EInfectionVariant } from './types.js';
-import { printPopulation } from './utils.js';
 import { getVariant } from './variant.js';
+import { EInfectionVariant } from './types.js';
 
 const population = createPopulation();
+const populationFlattened = getPopulationFlattened(population);
+const startingPoint = getRandomPerson(populationFlattened)
+console.log(startingPoint.name);
 
 printPopulation(population);
 console.log("--------------------------------------------------");
-printPopulation(infectAllFrom(population, Math.ceil(population.length / 2), getVariant(EInfectionVariant.ZOMBIE_A)))
+printPopulation(infectAllFrom(population, startingPoint, getVariant(EInfectionVariant.ZOMBIE_A)))

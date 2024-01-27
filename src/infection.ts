@@ -1,52 +1,54 @@
 import { EInfectionVariant, InfectionFunction, Person, Variant } from './types.js';
 import { infectPersonAndRelationsRecursive } from './utils.js';
 
-export const infectTopToBottom: InfectionFunction = (people: Person[], startIndex: number, variant: EInfectionVariant) => {
+// Zombie_A
+export const infectTopToBottom: InfectionFunction = (people: Person[], startingPoint: Person, variant: EInfectionVariant) => {
   const newPeople = Array.from(people);
 
-  const currentPerson = newPeople[startIndex];
-  newPeople[startIndex] = infectPersonAndRelationsRecursive(currentPerson, variant);
+  infectPersonAndRelationsRecursive(startingPoint, variant);
 
-  if(startIndex === people.length - 1) {
+  if(startingPoint === people.length - 1) {
     return newPeople;
   }
 
-  return infectTopToBottom(newPeople, startIndex + 1, variant);
+  return infectTopToBottom(newPeople, startingPoint + 1, variant);
 }
 
-export const infectBottomToTop: InfectionFunction = (people: Person[], startIndex: number, variant: EInfectionVariant) => {
+// Zombie_B
+export const infectBottomToTop: InfectionFunction = (people: Person[], startingPoint: Person, variant: EInfectionVariant) => {
   const newPeople = Array.from(people);
 
-  const currentPerson = newPeople[startIndex];
-  newPeople[startIndex] = infectPersonAndRelationsRecursive(currentPerson, variant);
+  const currentPerson = newPeople[startingPoint];
+  newPeople[startingPoint] = infectPersonAndRelationsRecursive(currentPerson, variant);
 
-  if(startIndex === 0) {
+  if(startingPoint === 0) {
     return newPeople;
   }
 
-  return infectBottomToTop(newPeople, startIndex - 1, variant);
+  return infectBottomToTop(newPeople, startingPoint - 1, variant);
 }
 
-export const infectEveryone = (people: Person[], startIndex: number, variant: EInfectionVariant): Person[] => {
+// Zombie_19
+export const infectEveryone = (people: Person[], startingPoint: Person, variant: EInfectionVariant): Person[] => {
   const firstIndex = 0;
   const lastIndex = people.length - 1;
 
-  if(startIndex === firstIndex) {
-    return infectTopToBottom(people, startIndex, variant);
+  if(startingPoint === firstIndex) {
+    return infectTopToBottom(people, startingPoint, variant);
   }
 
-  if(startIndex === lastIndex) {
-    return infectBottomToTop(people, startIndex, variant);
+  if(startingPoint === lastIndex) {
+    return infectBottomToTop(people, startingPoint, variant);
   }
 
-  const firstInfection = infectBottomToTop(people, startIndex, variant);
-  const nextInfection = infectTopToBottom(firstInfection, startIndex + 1, variant);
+  const firstInfection = infectBottomToTop(people, startingPoint, variant);
+  const nextInfection = infectTopToBottom(firstInfection, startingPoint + 1, variant);
 
   return nextInfection;
 }
-export const infectAllFrom = (people: Person[], startIndex: number, variant: Variant): Person[] => {
-  console.log("Infect all from index ", startIndex);
-  const newInfectedPopulation = variant.infect(people, startIndex, variant.name);
+export const infectAllFrom = (people: Person[], startingPoint: Person, variant: Variant): Person[] => {
+  console.log("Infect all from index ", startingPoint);
+  const newInfectedPopulation = variant.infect(people, startingPoint, variant.name);
 
   if(newInfectedPopulation === null) {
     throw new Error(`Variant ${variant} unknown or not implemented`);
