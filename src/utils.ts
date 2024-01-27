@@ -27,3 +27,10 @@ export const isHealthy = (p: Person) => {
 export const infectPerson = (person: Person, variant: EInfectionVariant): Person => {
   return {...person, infectionStatus: variant}
 }
+
+export const infectPersonAndRelationsRecursive = (p: Person, variant: EInfectionVariant): Person => {
+  const newPerson = infectPerson(p, variant);
+  newPerson.relations = p.relations.map(p => infectPersonAndRelationsRecursive(p, variant))
+
+  return newPerson;
+}

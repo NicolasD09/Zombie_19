@@ -11,7 +11,7 @@ const getRandomPerson = (): Person => ({
 })
 
 const generateRelations = (): Person[] => {
-  return Array.from({length: faker.number.int({min: 5, max: 5})})
+  return Array.from({length: faker.number.int({min: 3, max: 3})})
     .map(() => getRandomPerson())
 }
 const createPerson = (): Person => {
@@ -35,6 +35,6 @@ const createPerson = (): Person => {
 }
 
 export const createPopulation = (): Person[] => {
-  return Array.from({length:  faker.number.int({min: 5, max: 6})})
+  return Array.from({length:  faker.number.int({min: 2, max: 3})})
     .map(() => createPerson())
 }

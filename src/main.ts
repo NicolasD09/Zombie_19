@@ -1,10 +1,10 @@
 import { createPopulation } from './people.js';
-import { printPopulation } from './utils.js';
 import { infectAllFrom } from './infection.js';
 import { EInfectionVariant } from './types.js';
+import { printPopulation } from './utils.js';
 
 const population = createPopulation();
 
-infectAllFrom(population, 0, EInfectionVariant.ZOMBIE_A);
-
-printPopulation(infectAllFrom(population, 0, EInfectionVariant.ZOMBIE_A))
+printPopulation(population);
+console.log("--------------------------------------------------");
+printPopulation(infectAllFrom(population, 1, EInfectionVariant.ZOMBIE_A))
