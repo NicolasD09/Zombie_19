@@ -14,7 +14,9 @@ console.log(`Starting infection with ${getPersonInformationString(startingPoint)
 
 printPopulation(population);
 
-const variant = getVariant(EInfectionVariant.ZOMBIE_C);
+const variant = getVariant(EInfectionVariant.ZOMBIE_B);
+console.log(('---------------------------------------------------------------'));
+console.log(('---------------------------------------------------------------'));
 console.log(('---------------------------------------------------------------'));
 
 const infectedPopulation = infectAllFrom(population, startingPoint, variant);

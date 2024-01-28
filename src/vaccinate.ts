@@ -1,6 +1,7 @@
 import { EInfectionVariant, Person, Vaccine, VaccineApplyFunction } from './types.js';
 
 
+// A1 & U
 export const immunizeCompletely: VaccineApplyFunction = (person: Person) => {
   person.infectionStatus = undefined; // Healthy again
   person.immuneTo = [
@@ -13,6 +14,7 @@ export const immunizeCompletely: VaccineApplyFunction = (person: Person) => {
   ]
 }
 
+// B1
 export const applyB1Vaccine: VaccineApplyFunction = (person: Person) => {
   if(Math.random() > 0.5) {
     person.isAlive = false // u ded
@@ -21,7 +23,7 @@ export const applyB1Vaccine: VaccineApplyFunction = (person: Person) => {
   }
 }
 
-export const vaccinateEveryone = (people: Person[], person: Person, vaccine: Vaccine): Person[] => {
+export const vaccinateEveryoneFromRoot = (people: Person[], person: Person, vaccine: Vaccine): Person[] => {
   vaccinateRecursive(person, vaccine);
 
   return people;
@@ -34,7 +36,9 @@ export const vaccinateRecursive = (p: Person, vaccine: Vaccine): void => {
     return;
   }
 
-  p.relations.forEach(p => vaccinateRecursive(p, vaccine));
+  for (let i = 0; i < p.relations.length; i++) {
+    vaccinateRecursive(p.relations[i], vaccine);
+  }
 };
 
 export const vaccinatePerson = (person: Person, vaccine: Vaccine): void => {
@@ -49,7 +53,7 @@ const applyVaccine = (people: Person[], vaccine: Vaccine): Person[] => {
     if (index === people.length) {
       return people;
     }
-    vaccinateEveryone(people, tree, vaccine);
+    vaccinateEveryoneFromRoot(people, tree, vaccine);
     return vaccinateTree(index + 1);
   }
 

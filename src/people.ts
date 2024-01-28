@@ -54,10 +54,6 @@ export const createPopulation = (): Person[] => {
     people.push(createPerson());
   }
 
-  // for (let i = 1; i < nbPersons; i++) {
-  //   people[i].parentNode = people[i - 1];
-  // }
-
   return people;
 };
 
@@ -85,3 +81,7 @@ export const isAlive = (p: Person): boolean => {
 export const isHealthy = (p: Person): boolean => {
   return p.infectionStatus === undefined;
 };
+
+export const isImmune = (p: Person): boolean => {
+  return p.immuneTo.length !== 0;
+}

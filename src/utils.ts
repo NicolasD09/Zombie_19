@@ -1,18 +1,32 @@
 import { Person } from './types.js';
 import { faker } from '@faker-js/faker';
-import { isAlive } from './people.js';
+import { isAlive, isHealthy, isImmune } from './people.js';
+import chalk from 'chalk';
 
 export const getPersonInformationString = (person: Person, indent: string = ''): string => {
   const status = person.infectionStatus ? person.infectionStatus : 'Healthy';
-  const parent = person.parentNode ? person.parentNode.name : 'None';
-  return `${indent}${person.name} (${person.age} y/o, ${status}), parent : ${parent}, ${isAlive(person) ? 'alive' : 'dead'}, immune to ${person.immuneTo.length} variants`;
+  return `${indent}${person.name} (${person.age}, ${status}), ${isAlive(person) ? 'alive' : 'dead'}, immune to ${person.immuneTo.length} variants`;
 }
+
+const formatPerson = (person: Person, indent: string): string => {
+  if(!person.isAlive) {
+    return chalk.bgRed(getPersonInformationString(person, indent));
+  }
+  if(!isHealthy(person)) {
+    return chalk.bgYellow(getPersonInformationString(person, indent));
+  }
+  if(isHealthy(person) && isImmune(person)) {
+    return chalk.bgGreen(getPersonInformationString(person, indent));
+  }
+  return getPersonInformationString(person, indent);
+}
+
 export const printPerson = (person: Person, indent: string = '|'): void => {
-  console.log(getPersonInformationString(person, indent));
+  console.log(formatPerson(person, indent));
   if (person.relations.length > 0) {
     indent += '-';
-    for (const friend of person.relations) {
-      printPerson(friend, indent);
+    for (let i = 0; i < person.relations.length; i++) {
+      printPerson(person.relations[i], indent);
     }
   }
 };
