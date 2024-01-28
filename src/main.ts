@@ -8,24 +8,32 @@ import { getVaccine } from './vaccine.js';
 
 const population = createPopulation();
 const populationFlattened = getPopulationFlattened(population);
-const startingPoint = getRandomPerson(populationFlattened)
+const startingPoint = getRandomPerson(populationFlattened);
 
 console.log(`Starting infection with ${getPersonInformationString(startingPoint)}`);
 
 printPopulation(population);
 
-const variant = getVariant(EInfectionVariant.ZOMBIE_B);
+const variant = getVariant(EInfectionVariant.ZOMBIE_U);
 console.log(('---------------------------------------------------------------'));
 console.log(('---------------------------------------------------------------'));
 console.log(('---------------------------------------------------------------'));
 
 const infectedPopulation = infectAllFrom(population, startingPoint, variant);
 
-printPopulation(infectedPopulation)
+printPopulation(infectedPopulation);
 
-printPopulation(
-  vaccinateWith(
-    infectedPopulation,
-    getVaccine(EVaccine.B1)
-  )
-)
+console.log(('---------------------------------------------------------------'));
+console.log(('---------------------------------------------------------------'));
+console.log(('---------------------------------------------------------------'));
+
+const vaccinatedPopulation = vaccinateWith(
+  infectedPopulation,
+  getVaccine(EVaccine.U),
+);
+
+printPopulation(vaccinatedPopulation);
+
+const newInfection = infectAllFrom(population, startingPoint, variant);
+
+printPopulation(newInfection);

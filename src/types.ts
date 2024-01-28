@@ -6,6 +6,7 @@ export type Person = {
   immuneTo: EInfectionVariant[];
   isAlive: boolean;
   parentNode: Person;
+  isSeed: boolean; // can infect others
 }
 
 export interface Variant {

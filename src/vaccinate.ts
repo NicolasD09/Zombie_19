@@ -1,7 +1,7 @@
 import { EInfectionVariant, Person, Vaccine, VaccineApplyFunction } from './types.js';
 
 
-// A1 & U
+// A1
 export const immunizeCompletely: VaccineApplyFunction = (person: Person) => {
   person.infectionStatus = undefined; // Healthy again
   person.immuneTo = [
@@ -12,6 +12,12 @@ export const immunizeCompletely: VaccineApplyFunction = (person: Person) => {
     EInfectionVariant.ZOMBIE_19,
     EInfectionVariant.ZOMBIE_U,
   ]
+}
+
+// U
+export const immunizeAndStopSeed: VaccineApplyFunction = (person: Person) => {
+  immunizeCompletely(person);
+  person.isSeed = false;
 }
 
 // B1

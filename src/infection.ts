@@ -1,9 +1,10 @@
 import { Condition, EInfectionVariant, InfectionFunction, Person, Variant } from './types.js';
-import { isHealthy } from './people.js';
 
 // Zombie_A
 export const infectTopToBottom: InfectionFunction = (people: Person[], person: Person, variant: EInfectionVariant, condition?: Condition) => {
-  infectPersonAndRelationsRecursive(person, variant, condition);
+  if(person.isSeed) {
+    infectPersonAndRelationsRecursive(person, variant, condition);
+  }
 
   return people;
 };
@@ -62,7 +63,7 @@ export const infectAllFrom = (people: Person[], startingPoint: Person, variant: 
 };
 
 export const infectPerson = (person: Person, variant: EInfectionVariant, condition: Condition): void => {
-  if(condition(person) && isHealthy(person)) {
+  if(condition(person)) {
     person.infectionStatus = variant;
   }
 };

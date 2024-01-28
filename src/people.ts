@@ -9,6 +9,7 @@ const getRandomPerson = (): Person => ({
   immuneTo: [],
   isAlive: true,
   parentNode: undefined,
+  isSeed: true,
 });
 
 const generateRelations = (p: Person): Person[] => {
